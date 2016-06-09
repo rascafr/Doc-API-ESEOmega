@@ -1,0 +1,141 @@
+\documentclass[12pt,a4paper,oneside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{appendix}
+\usepackage{hyperref}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\author{\copyright SheepDev 2015-2016}
+\title{BDE ESEOmega\\Dossier de passation}
+\date{Juin 2016}
+\usepackage{fancyhdr}
+\usepackage{lcd}
+\usepackage{minted}
+\pagestyle{fancy}
+
+
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead[C]{Dossier de passation}
+\fancyhead[L]{BDE ESEOmega}
+\fancyfoot[C]{\textbf{page \thepage}} 
+\fancyfoot[L]{\copyright SheepDev 2015-2016}
+
+\usepackage{etoolbox}
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
+\begin{document}
+
+\begin{center}
+
+~
+
+\vfill
+\vfill
+\huge{\textbf{BDE ESEOmega}\\Dossier de passation}
+
+\Large{\copyright ~\textsl{SheepDev 2015-2016}}
+
+\vfill
+
+\end{center}
+
+\begin{figure}[h!]\centering
+\includegraphics[width=2cm]{res/sheep.png}
+\label{fig:results}
+\end{figure}
+
+\vfill
+\vfill
+\vfill
+
+\newpage
+
+\chapter{Généralités}
+
+\section{API}
+
+\subsection{Base}
+
+L'API développée communique avec les différents services par le biais des interfaces PHP qui seront énumérés par la suite.\\
+
+\noindent Le serveur est accessible à l'adresse \url{https://web59.secure-secure.co.uk/francoisle.fr/}, ainsi qu'en utilisant l'adresse dépendant de l'IP, \url{http://217.199.187.59/francoisle.fr/}. \\
+
+\noindent Préférer l'adresse HTTPS, afin de reforcer la sécurité des transactions (rendant l'interception par Wireshark impossible).
+
+\noindent Le chemin de base de l'API (racine) est celui du serveur (https / IP) suivi de \url{lacommande/api/}. Dans la suite de ce document, toutes les interfaces seront référencées vis à vis de ce chemin.
+
+\subsection{Paramètres}
+
+Pour passer des paramètres aux interfaces PHP du serveur, il faut utiliser la méthode d'accès POST, définie dans le protocole HTTP.
+
+\subsection{Réponse}
+
+Les réponses des interfaces du serveur respectent le format de données JSON. C'est plus beau que le XML, plus fexible que le CSV, et bien plus connu que le YAML.
+
+Chaque réponse du serveur contient \textbf{systématiquement} les données suivantes :
+
+\begin{itemize}
+
+\item \texttt{status} : Code d'erreur ($1$ : l'opération a réussi, sinon en cas d'erreur : $-x$ avec $x$ étant un nombre)
+
+\item \texttt{cause} : Message associé à ce code d'erreur. Peut être vide (lorsque \texttt{status} est à $1$ entre autres)
+
+\item \texttt{data} : Objet contenant les données liées à la requête vers l'API. Peut être vide.\footnote{Attention, lorsque \texttt{data} est vide, le champ est présent dans le JSON comme étant un \textit{Array} et non un \textit{Object} (et uniquement dans cette situation-là). Sous Android, préférer la fonction \texttt{optJSONObject(...)} au lieu de \texttt{getJSONObject(...)}, sinon ça guy-plantera.}
+
+\end{itemize}
+
+\subsection{Exemples}
+
+\subsubsection{Sans paramètres requis}
+
+Pour obtenir le message de service de la caféteria, la requête est faîte sur l'interface \url{info/service.php}.\\
+
+\noindent Etant donné qu'il ne s'agit que d'une information, aucun paramètre POST n'est requis.
+
+\noindent La réponse du serveur est la suivante (ça reste un exemple hein) :
+
+\begin{minted}{JSON}
+{
+    "status":1,
+    "cause":"",
+    "data":{
+        "service":"Le BDE paie sa danse du crabe"
+    }
+}
+\end{minted}
+
+\subsubsection{Avec paramètres manquants}
+
+La grande majorité des interfaces ont besoin de paramètres POST pour savoir quoi faire et avec qui. Si ces paramètres sont manquants (il en suffit d'un !), ou qu'une valeur ne correspond pas au formalisme attendu, une erreur est générée, et la reponse ressemblera, en gros, à ça :
+
+\begin{minted}{JSON}
+{
+    "status":-1,
+    "cause":"Parametres invalides",
+    "data":[ ]
+}
+\end{minted}
+
+\noindent Au passage, vous noterez ici le bel exemple du champ \texttt{data} qui, une fois vide, se transforme en \textit{Array}, ah bah bravo Morray.
+
+\subsubsection{Avec paramètres invalides}
+
+Tentative de récupération du numéro de version à jour d'une application, depuis l'interface PHP \url{info/version.php}. Pas besoin d'en dire plus (enfin d'expliquer pourquoi ça marche pas).\\
+
+\noindent \underline{Paramètres :} \mint{c}|os = DICK-HEAD|
+
+\noindent \underline{Réponse :}
+
+\begin{minted}[breaklines]{JSON}
+{
+    "status":-2,
+    "cause":"\"DICK-HEAD\" n'est pas declaree comme etant une application",
+    "data":[ ]
+}
+\end{minted}
+
+\end{document}
