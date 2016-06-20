@@ -3,29 +3,16 @@ Documentation de l'API ESEOmega et des différents services pour le dossier de p
 
 ## Contenu :
 
-+ Généralités sur l'API
-+ API News
-+ API Events
-+ API Réservations Events
-+ API Clubs & Vie asso
-+ API Cafet
-+ API Bons plans
-
-+ Organisation BDD clients
-+ Organisation BDD réservations events
-+ Organisation BDD cafet 
-+ Organisation BDD divers
-
-### Blablah
+#### Blablah intro préliminaires
 
 Section | Auteur | Terminée ?
---- | --- | ---
+--- | --- | :---:
 Généralités | François | ✓
 
-### API
+#### API
 
 Section | Auteur | Terminée ?
---- | --- | ---
+--- | --- | :---:
 News | François | ✓
 Events | NodetJS | 
 Réservations Events | François | 
@@ -33,10 +20,10 @@ Clubs & Vie asso | NodetJS |
 Cafet | François | 
 Bons plans | NodetJS | 
 
-### Fonctionnement BDD
+#### Fonctionnement BDD
 
 Section | Auteur | Terminée ?
---- | --- | ---
+--- | --- | :---:
 Clients | François | ✓
 Réservations Events | François | 
 Cafet, élements, etc | François | 
