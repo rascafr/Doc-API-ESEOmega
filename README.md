@@ -3,6 +3,8 @@ Documentation de l'API ESEOmega et des différents services pour le dossier de p
 
 ## Contenu :
 
+Please on met à jour quand c'est fini, et on déclare ses heures sur Redmine ou je vous bèz
+
 #### Blablah intro préliminaires
 
 Section | Auteur | Terminée ?
