@@ -76,7 +76,7 @@ Pour passer des paramètres aux interfaces PHP du serveur, il faut utiliser la m
 
 Les réponses des interfaces du serveur respectent le format de données JSON. C'est plus beau que le XML, plus fexible que le CSV, et bien plus connu que le YAML.
 
-Chaque réponse du serveur contient \textbf{systématiquement} les données suivantes :
+\noindent Chaque réponse du serveur contient \textbf{systématiquement} les données suivantes :
 
 \begin{itemize}
 
@@ -146,7 +146,7 @@ Les applications ESEOmega, ainsi que le site internet du BDE, peuvent récupére
 
 \section{Paramètres}
 
-L'interface ne requiert aucune donnée type autentification (les news ne sont pas un contenu protégé). En revanche, deu paramètres sont requis :
+L'interface ne requiert aucune donnée type autentification (les news ne sont pas un contenu protégé). En revanche, deux paramètres \texttt{GET}\footnote{Le \texttt{POST} on garde ça pour les champs qui servent à identifier quelque chose comme un utilisateur, t'as vu} sont requis :
 
 \begin{itemize}
 \item \texttt{height} : le nombre de news que l'on désire récupérer
@@ -193,5 +193,51 @@ Les données retournées (dans le cas où au moins une news existe) sont les sui
 \item \texttt{resume} : le résumé de la news, qui peut être utilisé pour afficher dans une liste le début du contenu (valeur sans formatage HTML)
 
 \end{itemize}
+
+\subsection{Exemple}
+
+On utilise l'interface de l'API news avec les paramètres suivants :\mint{c}|height = 2 & ptr = 0| Et ce, de façon à obtenir les deux dernières news les plus récentes.
+
+\begin{minted}[breaklines]{JSON}
+{
+    "articles":[
+        {
+            "id":1234,
+            "titre":"SheepDev est l\u00e0 !",
+            "date":"2016-05-30 20:59:14",
+            "auteur":"Shep4Ever",
+            "lien":"http://eseomega.fr/article-1234",
+            "img":"https://web59.secure-secure.co.uk/
+            francoisle.fr/eseonews/jsondata/clubs_img/sheep.jpg",
+            "content":"<div style=\"background-color: #fff7e5; 
+            margin: 0; padding: 0\">Caresses sur les cheveux<\/div>",
+            "resume":"Caresses sur les cheveux"
+        },
+        {
+            "id":1233,
+            "titre":"L'ESEO championne de Python !",
+            "date":"2016-05-29 20:12:13",
+            "auteur":"Administration ESEO",
+            "lien":"http://eseomega.fr/article-1233",
+            "img":"https://web59.secure-secure.co.uk/
+            francoisle.fr/eseonews/jsondata/clubs_img/rock-bert.jpg",
+            "content":"<span style=\"font-size: 12px; font-family: Arial; 
+            color: rgb(69, 69, 69); background-color: transparent; 
+            font-variant-ligatures: normal; 
+            font-variant-position: normal;
+            vertical-align: baseline; 
+            white-space: pre-wrap;\">
+            L'ESEO termine en 1 ère place à son codeur 
+            Python Axel Rollo ! Much wow<\/span>",
+            "resume":"L'ESEO termine en 1 ère place à son codeur
+            Python Axel Rollo ! Much wow"
+        }
+    ]
+}
+\end{minted}
+
+\noindent \underline{Le conseil du chef :} Pour un steak bien réussi, n'ajoutez du sel et du poivre qu'une fois que le côté à assaisonner est totalement cuit. Cela vous évitera d'avoir du sel ou du poivre brulé sur le steak, ainsi que sur la poêle !\\
+
+\noindent \underline{Autre conseil :} n'oubliez pas que même si \texttt{height} vaut par exemple 2 lors de votre requête, vous n'aurez pas forcément 2 news dans l'array JSON de la réponse (eh oui, il se peut qu'un seul article n'ait été posté). En règle générale, n'utilisez pas \texttt{height} comme une référence pour parser et afficher vos données, mais plutôt la taille de l'array JSON de la réponse (utilisez \texttt{JSON.length()} par exemple sur Android)
 
 \end{document}
