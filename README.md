@@ -26,8 +26,8 @@ Bons plans | NodetJS |
 
 Section | Auteur | Terminée ?
 --- | --- | :---:
-Clients | François | ✓
-Réservations Events | François | 
+Clients | François | 
+Réservations Events | François, NodetJS si t'es chaud coquine | 
 Cafet, élements, etc | François | 
 Divers | NodetJS, François | 
 
