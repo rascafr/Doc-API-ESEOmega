@@ -66,7 +66,7 @@ L'API développée communique avec les différents services par le biais des int
 
 \noindent Préférer l'adresse HTTPS, afin de reforcer la sécurité des transactions (rendant l'interception par Wireshark impossible).
 
-\noindent Le chemin de base de l'API (racine) est celui du serveur (https / IP) suivi de \url{lacommande/api/}. Dans la suite de ce document, toutes les interfaces seront référencées vis à vis de ce chemin.
+\noindent Le chemin de base de l'API (racine) est celui du serveur (https / IP) suivi de \url{lacommande/api/}. Dans la suite de ce document, toutes les interfaces seront référencées vis à vis de ce chemin (sauf exception, comme pour les news, sponsors, clubs, etc.).
 
 \subsection{Paramètres}
 
@@ -137,5 +137,61 @@ Tentative de récupération du numéro de version à jour d'une application, dep
     "data":[ ]
 }
 \end{minted}
+
+\chapter{News}
+
+Les applications ESEOmega, ainsi que le site internet du BDE, peuvent récupérer les dernières news publiées par les clubs (ainsi que par le BDE lui même). L'accès à cette interface de l'API se fait en utilisant l'URL suivante :\\
+
+\noindent \url{eseonews/getData.php} (\textbf{Attention !} référence par rapport au sous serveur \texttt{francoisle.fr})
+
+\section{Paramètres}
+
+L'interface ne requiert aucune donnée type autentification (les news ne sont pas un contenu protégé). En revanche, deu paramètres sont requis :
+
+\begin{itemize}
+\item \texttt{height} : le nombre de news que l'on désire récupérer
+\item \texttt{ptr} : le décalage en multiple de height que l'on souhaite appliquer pour la récupération des news
+\end{itemize}
+
+\subsection{Exemple}
+
+On désire afficher les 5 premières news : \mint{c}|height = 5 & ptr = 0|
+
+\subsection{Exemple encore plus}
+
+On désire afficher les 3 news qui suivent les 3 premières news (donc les news 3 à 5, si la première news est référencée comme étant la 0): \mint{c}|height = 3 & ptr = 1|
+
+\noindent En suivant cette logique, si on voulait afficher les 3 news qui suivent encore, il suffirait de faire passer le paramètre \texttt{ptr} à 2, puis 3 ... vous avez compris.\\
+
+\noindent C'est notamment ce qui est utilisé dans les applications pour obtenir un scroll \textsl{end-less}.
+
+\begin{figure}[h!]\centering
+\includegraphics[width=10cm]{res/endless.png}
+\caption{Scroll \textsl{end-less} : chargement automatique des news}
+\end{figure}
+
+\newpage
+
+\section{Réponse}
+
+Les données retournées (dans le cas où au moins une news existe) sont les suivantes :
+
+\begin{itemize}
+\item articles : la liste des articles en tant qu'array JSON
+\end{itemize}
+
+\noindent Pour chaque article :
+
+\begin{itemize}
+\item \texttt{id} : l'identifiant de la news en question, la plus récente ayant le nombre le plus élevé
+\item \texttt{titre} : le titre de la news, sans formatage HTML
+\item \texttt{date} : la date de rédaction de la news, au format SQL\footnote{Pour rappel, le format SQL c'est ça : \texttt{YYYY-MM-DD HH:mm:ss}}
+\item \texttt{lien} : le lien (URL) vers l'article sur le site du BDE. Peut être vide (si aucun site n'existe par exemple. Dans ce cas, l'application ne doit pas permettre le clic vers cette URL ...)
+\item \texttt{auteur} : le nom du club qui a rédigé la news en question
+\item \texttt{img} : le lien vers l'image associée à ce club (image de header)
+\item \texttt{content} : le contenu de la news à afficher, avec formatage HTML\footnote{Attention, le formatage HTML utilisé est celui du \textsl{WYSIWYG} (éditeur graphique). Il ne contient donc pas les champs \texttt{<html>}, \texttt{<body>}, etc. Pour une webview dans une application mobile, cela ne pose pas de problèmes, en revanche, pour un site web, il conviendra de respecter les normes imposées par le W3C en ajoutant les balises qu'il faut ...}
+\item \texttt{resume} : le résumé de la news, qui peut être utilisé pour afficher dans une liste le début du contenu (valeur sans formatage HTML)
+
+\end{itemize}
 
 \end{document}
