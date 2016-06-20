@@ -1,0 +1,10 @@
+# Ignore minted temp files
+/latex/_minted-sheep
+
+# Ignore sync package
+/latex/*.gz
+
+# Ignore shit we don't care about
+/latex/*.aux
+/latex/*.log
+/latex/*.out
